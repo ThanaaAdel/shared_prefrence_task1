@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     loginCubit = context.read<LoginCubit>();
     loginCubit.emitLogin();
+    loginCubit.getUserData();
   }
 
   @override
@@ -28,15 +29,10 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
       ),
       body: Center(
-        child: BlocConsumer<LoginCubit, LoginState>(
-          listener: (context, state) {
-            // Handle error state here if needed
-            if (state is Error) {
-              setupErrorState(context, state.error);
-            }
-          },
+        child: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
-            return state.maybeWhen(
+            return state.when(
+              initial: () => const CircularProgressIndicator(color: ColorsManager.mainBlack),
               loading: () => const CircularProgressIndicator(color: ColorsManager.mainBlack),
               success: (data) {
                 final loginRequestModel = data as LoginRequestModel;
@@ -46,18 +42,19 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Welcome, ${loginRequestModel.name}',
-                      style: const TextStyle(fontSize: 24,color: ColorsManager.mainBlack),
+                      style: const TextStyle(fontSize: 24, color: ColorsManager.mainBlack),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       'Birth date is: ${loginRequestModel.birthDate}',
-                      style: const TextStyle(fontSize: 18,color: ColorsManager.mainBlack),
-
+                      style: const TextStyle(fontSize: 18, color: ColorsManager.mainBlack),
                     ),
                   ],
                 );
               },
-              orElse: () => const SizedBox.shrink(),
+              error: (error) {
+                return Text("Error: $error");
+              },
             );
           },
         ),
