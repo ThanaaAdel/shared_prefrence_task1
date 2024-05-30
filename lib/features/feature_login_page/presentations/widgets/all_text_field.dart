@@ -117,7 +117,7 @@ class _AllTextFieldsWidgetState extends State<AllTextFieldsWidget> {
 
   void validateThenDoSignUp(BuildContext context) {
     if (context.read<LoginCubit>().formKey.currentState!.validate()) {
-      context.read<LoginCubit>().login();
+      context.read<LoginCubit>().emitLogin();
       print("the name : ${context.read<LoginCubit>().nameController.text} and the birth date is ${context.read<LoginCubit>().birthDateController.text}");
     } else {
       print("Validation failed. Please check the form fields.");
@@ -138,5 +138,6 @@ class _AllTextFieldsWidgetState extends State<AllTextFieldsWidget> {
       _birthDateController.text = formattedDate;
     }
   }
+
 
 }

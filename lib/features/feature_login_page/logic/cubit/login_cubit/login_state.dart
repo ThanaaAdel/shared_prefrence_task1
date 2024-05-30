@@ -1,36 +1,11 @@
-class LoginState {
-  final bool isLoading;
-  final String? userName;
-  final String? userBirthDate;
-  final String? error;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  LoginState({
-    required this.isLoading,
-    this.userName,
-    this.userBirthDate,
-    this.error,
-  });
+part 'login_state.freezed.dart';
+@freezed
+abstract class LoginState<T> with _$LoginState<T> {
+  const factory LoginState.initial() = _Initial;
+  const factory LoginState.loading() = Loading;
+  const factory LoginState.success(T data) = Success<T>;
+  const factory LoginState.error({required String error}) = Error;
 
-  factory LoginState.initial() {
-    return LoginState(
-      isLoading: false,
-      userName: null,
-      userBirthDate: null,
-      error: null,
-    );
-  }
-
-  LoginState copyWith({
-    bool? isLoading,
-    String? userName,
-    String? userBirthDate,
-    String? error,
-  }) {
-    return LoginState(
-      isLoading: isLoading ?? this.isLoading,
-      userName: userName ?? this.userName,
-      userBirthDate: userBirthDate ?? this.userBirthDate,
-      error: error ?? this.error,
-    );
-  }
 }

@@ -63,12 +63,14 @@ dependencies:
   dots_indicator: ^3.0.0
   shared_preferences: ^2.2.3
 
+
 dev_dependencies:
   json_serializable: ^6.7.1
   flutter_test:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

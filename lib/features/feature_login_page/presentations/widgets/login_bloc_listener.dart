@@ -22,48 +22,22 @@ class _SignInBlocListenerState extends State<LoginBlocListener> {
     return BlocListener<LoginCubit, LoginState>(
       child: const SizedBox.shrink(),
       listener: (context, state) {
-        if (state.isLoading) {
-          showDialog(
-            context: context,
-            builder: (context) => const Center(
-              child: CircularProgressIndicator(
-                color: ColorsManager.mainColor,
-              ),
+      state.whenOrNull(loading: () {
+        showDialog(
+          context: context,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(
+              color: ColorsManager.mainColor,
             ),
-          );
-        } else {
-          Navigator.of(context).pop(); // Dismiss the loading dialog
-          if (state.error != null) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                content: Text(
-                  state.error!,
-                  style: TextStyles.font14MediumLightBlack,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Got It ',
-                      style: TextStyles.font20BoldBlack,
-                    ),
-                  ),
-                ],
-                icon: const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                  size: 32,
-                ),
-              ),
-            );
-          } else {
-            Navigator.of(context).pushNamed(Routes.homePage);
-          }
-        }
-      },
+          ),
+        );
+      }, success: (data) {
+        Navigator.of(context).pushNamed(Routes.homePage);
+      }, error: (error) {
+        setupErrorState(context, error);
+      });
+    },
+
     );
   }
 
